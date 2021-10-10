@@ -21,13 +21,12 @@ def gen_perms(seq):
     [['a', 'b'], ['b', 'a']]
     """
     "*** YOUR CODE HERE ***"
-    if len(seq) == 1:
+    if (len(seq) == 1):
         yield seq
-    for i in range(len(seq)):
-        permutations = gen_perms(seq[1:])
-        for permutation in permutations:
-            permutation = permutation.insert(i, seq[0])
-            yield permutation
+    else:
+        for i in range(len(seq)):
+            for permutation in gen_perms(seq[:i] + seq[i + 1:]):
+                yield [seq[i]] + list(permutation)
             
 
 
@@ -70,10 +69,15 @@ def path_yielder(t, value):
     """
 
     "*** YOUR CODE HERE ***"
-
-    for _______________ in _________________:
-        for _______________ in _________________:
-
+    if t.is_leaf() == True:
+        if t.label == value:
+            yield [t.label]
+    else:
+        if t.label == value:
+            yield [t.label]
+        for b in t.branches:
+            for path in path_yielder(b, value):
+                yield [t.label] + list(path)
             "*** YOUR CODE HERE ***"
 
 
@@ -88,6 +92,12 @@ def preorder(t):
     [2, 4, 6]
     """
     "*** YOUR CODE HERE ***"
+    result = [t.label]
+    if t.is_leaf():
+        return result
+    for b in t.branches:
+        result = result + list(preorder(b))
+    return result
 
 
 def generate_preorder(t):
@@ -102,6 +112,13 @@ def generate_preorder(t):
     [2, 3, 4, 5, 6, 7]
     """
     "*** YOUR CODE HERE ***"
+    if t.is_leaf():
+        yield t.label
+    else:
+        yield t.label
+        for b in t.branches:
+            for node in preorder(b):
+                yield node
 
 
 def remainders_generator(m):
