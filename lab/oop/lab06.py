@@ -1,3 +1,6 @@
+from operator import le
+
+
 class Cat:
     def __init__(self, name, owner, lives=9):
         self.is_alive = True
@@ -36,7 +39,9 @@ class Cat:
         """
         cat_names = ["Felix", "Bugs", "Grumpy"]
         "*** YOUR CODE HERE ***"
-        return cls(____, ____, ____)
+        cat_name = cat_names[len(owner) % len(cat_names)]
+        cat_lives = len(owner) + len(cat_name)
+        return cls(cat_name, owner, cat_lives)
 
 
 class Account:
@@ -80,6 +85,12 @@ class Account:
         """Return the number of years until balance would grow to amount."""
         assert self.balance > 0 and amount > 0 and self.interest > 0
         "*** YOUR CODE HERE ***"
+        expect_balance = self.balance
+        year = 0
+        while expect_balance < amount:
+            year += 1
+            expect_balance += expect_balance * Account.interest
+        return year
 
 
 class FreeChecking(Account):
@@ -109,3 +120,21 @@ class FreeChecking(Account):
     free_withdrawals = 2
 
     "*** YOUR CODE HERE ***"
+    def __init__(self, account_holder):
+        super().__init__(account_holder)
+        self.withdraw_num = 0
+    
+    def withdraw(self, amount):
+        if self.withdraw_num < 2:
+            self.withdraw_num += 1
+            if amount > self.balance:
+                return 'Insufficient funds'
+            else:
+                self.balance -= amount
+                return self.balance
+        else:
+            if FreeChecking.withdraw_fee + amount > self.balance:
+                return 'Insufficient funds'
+            else:
+                self.balance = self.balance - amount - self.withdraw_fee
+                return self.balance
