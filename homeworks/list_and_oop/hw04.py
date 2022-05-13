@@ -1,3 +1,6 @@
+from operator import le
+
+
 def merge(lst1, lst2):
     """Merges two sorted lists.
 
@@ -11,6 +14,26 @@ def merge(lst1, lst2):
     [2, 4, 5, 6, 7]
     """
     "*** YOUR CODE HERE ***"
+    length1 = len(lst1)
+    length2 = len(lst2)
+    i = 0
+    j = 0
+    lst3 = []
+    while i < length1 and j < length2:
+        if lst1[i] < lst2[j]:
+            lst3.append(lst1[i])
+            i += 1
+        else:
+            lst3.append(lst2[j])
+            j += 1
+    while i < length1:
+        lst3.append(lst1[i])
+        i += 1
+    while j < length2:
+        lst3.append(lst2[j])
+        j += 1
+    return lst3
+
 
 
 class Mint:
@@ -49,9 +72,11 @@ class Mint:
 
     def create(self, coin):
         "*** YOUR CODE HERE ***"
+        return coin(self.year)
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year = Mint.present_year
 
 
 class Coin:
@@ -62,6 +87,10 @@ class Coin:
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        if Mint.present_year - self.year <= 50:
+            return self.cents
+        else:
+            return self.cents + Mint.present_year - self.year - 50
 
 
 class Nickel(Coin):
@@ -110,3 +139,37 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+        self.balance = 0
+        self.num = 0
+    
+    def restock(self, num):
+        self.num += num
+        return 'Current ' + self.name + ' stock: ' + str(self.num)
+    
+    def add_funds(self, fund=0):
+        if self.num == 0:
+            return 'Nothing left to vend. Please restock. Here is your $' + str(fund) + '.'
+        else:
+            self.balance += fund
+            return 'Current balance: $' + str(self.balance)
+    
+    def vend(self):
+        if self.num == 0:
+            return 'Nothing left to vend. Please restock.'
+        elif self.balance < self.price:
+            return 'You must add $' + str(self.price - self.balance) + ' more funds.'
+        else:
+            self.num -= 1
+            self.balance -= self.price
+            if self.balance == 0:
+                return 'Here is your ' + self.name + '.'
+            else:
+                remainder = self.balance
+                self.balance = 0
+                return 'Here is your ' + self.name + ' and $' + str(remainder) + ' change.'
+
+
+    
