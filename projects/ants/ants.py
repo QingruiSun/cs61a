@@ -455,16 +455,22 @@ class ScubaThrower(ThrowerAnt):
 # BEGIN Problem 12
 
 
-class QueenAnt(Ant):  # You should change this line
+class QueenAnt(ScubaThrower):  # You should change this line
 # END Problem 12
     """The Queen of the colony. The game is over if a bee enters her place."""
 
     name = 'Queen'
     food_cost = 7
     # OVERRIDE CLASS ATTRIBUTES HERE
+
     # BEGIN Problem 12
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    has_constructed = False
     # END Problem 12
+
+    def __init__(self, health=1):
+        super().__init__(health)
+        self.construct_list = []
 
     @classmethod
     def construct(cls, gamestate):
@@ -474,6 +480,11 @@ class QueenAnt(Ant):  # You should change this line
         """
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        if cls.has_constructed:
+            return None
+        else:
+            cls.has_constructed = True
+            return super().construct(gamestate)
         # END Problem 12
 
     def action(self, gamestate):
@@ -482,6 +493,16 @@ class QueenAnt(Ant):  # You should change this line
         """
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        super().action(gamestate)
+        place = self.place.exit
+        while place != None:
+            if (place.ant != None) and (place.ant not in self.construct_list):
+                self.construct_list.append(place.ant)
+                place.ant.damage = place.ant.damage * 2
+            if place.ant != None and place.ant.is_container and place.ant.ant_contained != None and (place.ant.ant_contained not in self.construct_list):
+                place.ant.ant_contained.damage = place.ant.ant_contained.damage * 2
+                self.construct_list.append(place.ant.ant_contained)
+            place = place.exit
         # END Problem 12
 
     def reduce_health(self, amount):
@@ -490,7 +511,13 @@ class QueenAnt(Ant):  # You should change this line
         """
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        super().reduce_health(amount)
+        if self.health <= 0:
+            ants_lose()
         # END Problem 12
+    
+    def remove_from(self, place):
+        pass
 
 
 class AntRemover(Ant):
