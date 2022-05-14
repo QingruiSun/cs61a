@@ -1,3 +1,6 @@
+from calendar import isleap
+
+
 def store_digits(n):
     """Stores the digits of a positive number n in a linked list.
 
@@ -15,6 +18,14 @@ def store_digits(n):
     >>> link1 = Link(3, Link(Link(4), Link(5, Link(6))))
     """
     "*** YOUR CODE HERE ***"
+    next_node = Link.empty
+    now_node = Link.empty
+    while n != 0:
+        digit = n % 10
+        now_node = Link(digit, next_node)
+        n = n // 10
+        next_node = now_node
+    return now_node
 
 
 def cumulative_mul(t):
@@ -31,6 +42,17 @@ def cumulative_mul(t):
     Tree(5040, [Tree(60, [Tree(3), Tree(4), Tree(5)]), Tree(42, [Tree(7)])])
     """
     "*** YOUR CODE HERE ***"
+    if t.is_leaf():
+        return
+    for b in t.branches:
+        cumulative_mul(b)
+    value = t.label
+    for b in t.branches:
+        value = value * b.label
+    t.label = value
+    return
+        
+    
 
 
 def has_cycle(link):
@@ -48,6 +70,22 @@ def has_cycle(link):
     False
     """
     "*** YOUR CODE HERE ***"
+    if link is Link.empty:
+        return False
+    slow_link = link
+    fast_link = link.rest
+    has_cycle  = False
+    while fast_link is not Link.empty:
+        if fast_link is slow_link:
+            has_cycle = True
+            break
+        slow_link = slow_link.rest
+        fast_link = fast_link.rest
+        if fast_link is Link.empty:
+            break
+        fast_link = fast_link.rest
+    return has_cycle
+
 
 
 def has_cycle_constant(link):
@@ -62,7 +100,21 @@ def has_cycle_constant(link):
     False
     """
     "*** YOUR CODE HERE ***"
-
+    if link is Link.empty:
+        return False
+    slow_link = link
+    fast_link = link.rest
+    has_cycle  = False
+    while fast_link is not Link.empty:
+        if fast_link is slow_link:
+            has_cycle = True
+            break
+        slow_link = slow_link.rest
+        fast_link = fast_link.rest
+        if fast_link is Link.empty:
+            break
+        fast_link = fast_link.rest
+    return has_cycle
 
 class Link:
     """A linked list.
