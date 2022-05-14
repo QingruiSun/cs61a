@@ -1,6 +1,7 @@
 """CS 61A presents Ants Vs. SomeBees."""
 
 import random
+from this import s
 from ucb import main, interact, trace
 from collections import OrderedDict
 
@@ -181,6 +182,8 @@ class ThrowerAnt(Ant):
     damage = 1
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
     food_cost = 3
+    min_range = 0
+    max_range = float('inf')
 
     def nearest_bee(self):
         """Return the nearest Bee in a Place that is not the HIVE, connected to
@@ -191,13 +194,20 @@ class ThrowerAnt(Ant):
         # BEGIN Problem 3 and 4
         #return random_bee(self.place.bees)  # REPLACE THIS LINE
         now_place = self.place
+        transition = 0
         while now_place.is_hive == False:
+            if transition > self.max_range:
+                break
+            if transition < self.min_range:
+                now_place = now_place.entrance
+                transition += 1
+                continue
             if len(now_place.bees) == 0:
                 now_place = now_place.entrance
+                transition += 1
             else:
-                return random_bee(now_place.bees)
+                return random_bee(now_place.bees)             
         return None
-
         # END Problem 3 and 4
 
     def throw_at(self, target):
@@ -227,8 +237,10 @@ class ShortThrower(ThrowerAnt):
     name = 'Short'
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
+    min_range = 0
+    max_range = 3
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 4
 
 
@@ -237,9 +249,11 @@ class LongThrower(ThrowerAnt):
 
     name = 'Long'
     food_cost = 2
+    min_range = 5
+    max_range = float('inf')
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 4
 
 
