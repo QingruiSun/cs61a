@@ -86,6 +86,12 @@ class Buffer:
 
         # BEGIN
         "*** YOUR CODE HERE ***"
+        self.source = source
+        self.generator = self.create_generator(self.source)
+        try:
+            self.current = next(self.generator)
+        except StopIteration:
+            self.current = None
         # END
 
     def create_generator(self, source):
@@ -95,6 +101,10 @@ class Buffer:
         """
         # BEGIN
         "*** YOUR CODE HERE ***"
+        for list in source:
+            for token in list:
+                yield token
+            yield EOL_TOKEN
         # END
 
     def pop_first(self):
@@ -105,6 +115,12 @@ class Buffer:
         """
         # BEGIN
         "*** YOUR CODE HERE ***"
+        initial = self.current
+        try:
+            self.current = next(self.generator)
+        except StopIteration:
+            self.current = None
+        return initial
         # END
 
     def end_of_line(self):
