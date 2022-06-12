@@ -17,6 +17,7 @@ would be read to the value, where possible.
 
 import numbers
 import builtins
+import secrets
 
 from ucb import main, trace, interact
 from scheme_tokens import tokenize_lines, DELIMITERS
@@ -45,14 +46,17 @@ def scheme_read(src):
     if val == 'nil':
         # BEGIN PROBLEM 2
         "*** YOUR CODE HERE ***"
+        return nil
         # END PROBLEM 2
     elif val == '(':
         # BEGIN PROBLEM 2
         "*** YOUR CODE HERE ***"
+        return read_tail(src)
         # END PROBLEM 2
     elif val == "'":
         # BEGIN PROBLEM 3
         "*** YOUR CODE HERE ***"
+        return Pair('quote', Pair(scheme_read(src), nil))
         # END PROBLEM 3
     elif val not in DELIMITERS:
         return val
@@ -76,10 +80,16 @@ def read_tail(src):
         elif src.current == ')':
             # BEGIN PROBLEM 2
             "*** YOUR CODE HERE ***"
+            src.pop_first()
+            return nil
             # END PROBLEM 2
         else:
             # BEGIN PROBLEM 2
             "*** YOUR CODE HERE ***"
+            first = scheme_read(src)
+            second = read_tail(src)
+            pair = Pair(first, second)
+            return pair
             # END PROBLEM 2
     except EOFError:
         raise SyntaxError('unexpected end of file')
