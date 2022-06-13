@@ -8,7 +8,12 @@
 
 (define (get-lon city) (car (cdr (cdr city))))
 
-(define (distance city-a city-b) 'YOUR-CODE-HERE)
+(define (distance city-a city-b) 
+    (define a1 (get-lat city-a))
+    (define a2 (get-lon city-a))
+    (define b1 (get-lat city-b))
+    (define b2 (get-lon city-b))
+    (sqrt (+ (expt (- a1 b1) 2) (expt (- a2 b2) 2))))
 
 (define (closer-city lat lon city-a city-b)
   'YOUR-CODE-HERE)
