@@ -16,7 +16,11 @@
     (sqrt (+ (expt (- a1 b1) 2) (expt (- a2 b2) 2))))
 
 (define (closer-city lat lon city-a city-b)
-  'YOUR-CODE-HERE)
+    (define tmp_city (make-city 'Utopia lat lon))
+    (define a_distance (distance tmp_city city-a))
+    (define b_distance (distance tmp_city city-b))
+    (if (< a_distance b_distance)
+    (get-name city-a) (get-name city-b)))
 
 ; Teacher and Student Abstractions
 (define (student-create name classes)
