@@ -2,3 +2,5 @@
 'match_time-correct', (512, 70)
 'linked_list-correct', (1024, 70)
 'tree-correct', (1536, 70)
+'regex_grouping-correct', (2048, 70)
+'regex_classes-correct', (2560, 70)

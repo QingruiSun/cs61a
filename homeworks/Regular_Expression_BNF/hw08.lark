@@ -1,4 +1,4 @@
-?start: tree_node
+?start: rstring
 
 link: "Link(" NUMBER ")" | "Link(" NUMBER "," link* ")" | "Link(" link* ")"
 ?link_first: "Link("
@@ -20,7 +20,13 @@ branches: "[" tree_node "]" | "[" tree_node "," tree_node+ "]"
 
 rstring: "r\"" regex* "\""
 
-?regex: character | word
+?regex: character | word | group | pipe | class
+
+group: "(" regex* ")"
+pipe: regex "|" regex
+
+range: NUMBER "-" NUMBER | LETTER "-" LETTER
+class: "[" (range* character*)* "]"
 
 character: LETTER | NUMBER
 word: WORD
