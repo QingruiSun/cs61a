@@ -1,4 +1,4 @@
-?start: link
+?start: tree_node
 
 link: "Link(" NUMBER ")" | "Link(" NUMBER "," link* ")" | "Link(" link* ")"
 ?link_first: "Link("
@@ -8,12 +8,11 @@ link: "Link(" NUMBER ")" | "Link(" NUMBER "," link* ")" | "Link(" link* ")"
 %import common.NUMBER
 
 
-tree_node: "null"
+tree_node: "Tree(" label ")" | "Tree(" label "," branches* ")"
 
+?label: NUMBER
 
-?label: "null"
-
-branches: "null"
+branches: "[" tree_node "]" | "[" tree_node "," tree_node+ "]"
 
 %ignore /\s+/
 %import common.NUMBER
