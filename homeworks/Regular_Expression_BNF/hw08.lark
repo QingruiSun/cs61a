@@ -1,8 +1,8 @@
-link: "null"
+?start: link
 
-?link_first: "null"
-
-?link_rest: "null"
+link: "Link(" NUMBER ")" | "Link(" NUMBER "," link* ")" | "Link(" link* ")"
+?link_first: "Link("
+?link_rest: NUMBER "," link* ")" | link* ")"
 
 %ignore /\s+/
 %import common.NUMBER
